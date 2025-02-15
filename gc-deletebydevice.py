@@ -120,42 +120,46 @@ args = get_args()
 
 print('Welcome to the Garmin Connect "Delete Activity by Device ID" Tool!')
 print('')
-USERNAME=''
-PASSWORD=''
-DEVICEID=''
-while not USERNAME:
-        USERNAME = ARGS.username if ARGS.username else input('Username: ')
-        if not USERNAME:
-                print("Please enter a username.")
-                print("")
-while not PASSWORD:
-        PASSWORD = ARGS.password if ARGS.password else getpass()
-        if not PASSWORD:
-                print("Please enter a password.")
-                print("")
 
-while not DEVICEID:
-        DEVICEID = ARGS.deviceid if ARGS.deviceid else input('Device ID: ')
-        if not DEVICEID:
-                print("Please enter a device ID.")
-                print("")
+username = ''
+password = ''
+device_id = ''
 
-DEVICEID=int(DEVICEID)
+while not username:
+    username = args.username if args.username else input('Username: ')
+    if not username:
+        print('Please enter a username.')
+        print('')
+while not password:
+    password = args.password if args.password else getpass()
+    if not password:
+        print('Please enter a password.')
+        print('')
+while not device_id:
+    device_id = args.deviceid if args.deviceid else input('Device ID: ')
+    if not device_id:
+        print('Please enter a device ID.')
+        print('')
+    try:
+        device_id = int(device_id)
+    except ValueError:
+        print('Device ID must be an integer.')
+        device_id = None
 
-# Maximum # of activities you can search for at once (URL_GC_LIST)
-LIMIT_ACTIVITY_LIST = 9999
+from_date = prompt_date('Start Date (e.g. 2018-09-30 or blank for oldest activity): ',
+                       args.fromdate)
+if not from_date:
+    from_date = date.min
+to_date = prompt_date('End Date (e.g. 2018-10-30 or blank for today): ',
+                     args.todate)
+if not to_date:
+    to_date = date.today()
 
-
-print('')
-print('WARNING: GARMIN CONNECT ACTIVITIES FOR DEVICE ' + str(DEVICEID) + " WILL BE DELETED FOREVER!")
-RESPONSE = input('Type "YES" and press ENTER if you are absolutely sure: ')
-if RESPONSE != 'YES':
-        sys.exit(0)
-
-
-print("Logging in...")
-
-garmin = Garmin(email=USERNAME, password=PASSWORD, is_cn=False)
+print(f'WARNING: Garmin Connect activities for device {device_id}'
+      f' will be deleted forever!')
+response = input('Type "YES" and press ENTER if you are absolutely sure: ')
+if response != 'YES':
+    sys.exit(0)
 garmin.login()
 
 JSON_LIST = garmin.get_activities(start=0, limit=LIMIT_ACTIVITY_LIST)
