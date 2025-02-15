@@ -41,27 +41,82 @@ import argparse
 
 from garminconnect import Garmin
 
-SCRIPT_VERSION = '0.0.2'
+script_version = '0.0.3'
 
-PARSER = argparse.ArgumentParser()
+def prompt_date(prompt, default_value):
+    """get data range value interactively"""
+    while True:
+        targetDate = default_value if default_value else input(prompt)
+        if not targetDate or type(targetDate) == datetime:
+            break
+        try:
+            datetime.strptime(targetDate, '%Y-%m-%d')
+        except ValueError:
+            print('Invalid date.')
+            continue
+        break
+    return targetDate
 
-# TODO: Implement verbose and/or quiet options.
-# PARSER.add_argument('-v', '--verbose', help="increase output verbosity", action="store_true")
-PARSER.add_argument('--version', help="print version and exit", action="store_true")
-PARSER.add_argument('--username', help="your Garmin Connect username (otherwise, you will be \
-    prompted)", nargs='?')
-PARSER.add_argument('--password', help="your Garmin Connect password (otherwise, you will be \
-    prompted)", nargs='?')
+def get_args():
+    """get command-line arguments"""
+    parser = argparse.ArgumentParser(
+        description = (
+            "A tool for deleting activities with optional date range "
+            "associated with a specified Garmin device ID. The intended "
+            "use is to purge unwanted data from a previous device user."
+            )
+    )
 
-PARSER.add_argument('--deviceid', help="the device ID for activities to delete (otherwise, you will be \
-    prompted)", nargs='?')
+    def date_parser(date_string):
+        try:
+            targetDate = datetime.strptime(date_string, "%Y-%m-%d")
+        except ValueError:
+            print('Invalid date.')
+            exit(0)
+        return targetDate
 
-ARGS = PARSER.parse_args()
+    parser.add_argument('--version',
+                        help="print version and exit",
+                        action="store_true")
+    parser.add_argument('--username', '-u',
+                        type=str,
+                        metavar="GARMIN_USERNAME",
+                        help="your Garmin Connect username (otherwise, \
+                        you will be prompted)",
+                        nargs='?')
+    parser.add_argument('--password', '-p',
+                        type=str,
+                        metavar="GARMIN_PASSWORD",
+                        help="your Garmin Connect password (otherwise, \
+                        you will be prompted)",
+                        nargs='?')
+    parser.add_argument('--deviceid', '-d',
+                        type=int,
+                        metavar="DEVICE_ID",
+                        help="the device ID for activities to delete (otherwise, \
+                        you will be prompted)",
+                        nargs='?')
+    parser.add_argument('--fromdate', '-f',
+                        type=date_parser,
+                        help="the date of the first activity to delete \
+                        (e.g. 2018-09-30) (otherwise, you will be prompted)",
+                        metavar="DATE",
+                        nargs='?')
+    parser.add_argument('--todate', '-t',
+                        type=date_parser,
+                        help="the date of the last activity to delete \
+                        (e.g. 2018-10-30) (otherwise, you will be prompted)",
+                        metavar="DATE",
+                        nargs='?')
 
-if ARGS.version:
-    print(argv[0] + ", version " + SCRIPT_VERSION)
-    exit(0)
+    args = parser.parse_args()
+    if args.version:
+        print(argv[0] + ", version " + script_version )
+        exit(0)
 
+    return args
+
+args = get_args()
 
 print('Welcome to the Garmin Connect "Delete Activity by Device ID" Tool!')
 print('')
