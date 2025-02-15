@@ -160,26 +160,35 @@ print(f'WARNING: Garmin Connect activities for device {device_id}'
 response = input('Type "YES" and press ENTER if you are absolutely sure: ')
 if response != 'YES':
     sys.exit(0)
+
+print('Logging in...')
+
+garmin = Garmin(email=username, password=password, is_cn=False)
 garmin.login()
 
-JSON_LIST = garmin.get_activities(start=0, limit=LIMIT_ACTIVITY_LIST)
+activity_list = garmin.get_activities_by_date(startdate=from_date, enddate=to_date)
 
-if len(JSON_LIST) == 0:
-        print("No activities found for the given date range.")
+if len(activity_list) == 0:
+    print('No activities found for the given date range.')
 else:
-        print("Found " + str(len(JSON_LIST)) + " activities.")
+    print('Found ' + str(len(activity_list)) + ' activities.')
 
-for a in JSON_LIST:
-        print('Activity: ' + a['startTimeLocal'] + (' | ' + a['activityName'] if a['activityName'] else ''))
+for activity in activity_list:
+    start_time, activity_name, activity_id, activity_device_id = \
+      (activity['startTimeLocal'],
+       activity['activityName'],
+       str(activity['activityId']),
+       activity['deviceId'])
 
-        print('  Activity device ID = ' + str(a['deviceId']))
-        if a['deviceId'] == DEVICEID:
-                print('  Deleting activity!')
-                garmin.delete_activity(activity_id=str(a["activityId"]))
-        else:
-                print('  Device ID does not match. Not deleting activity.')
+    print(f"Activity: {start_time}"
+          f"{' | '+activity_name if activity_name else ''}"
+          f", device ID = {activity_device_id}")
+
+    if activity_device_id == device_id:
+        print('  Deleting activity!')
+        garmin.delete_activity(activity_id=activity_id)
+    else:
+        print('  Device ID does not match target. Not deleting activity.')
 
 print('')
 print('Done!')
-
-input('Press ENTER to quit');
