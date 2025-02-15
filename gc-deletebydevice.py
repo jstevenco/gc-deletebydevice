@@ -116,35 +116,46 @@ def get_args():
 
     return args
 
+def get_username():
+    username = ''
+    while not username:
+        username = args.username if args.username else input('Username: ')
+        if not username:
+            print('Please enter a username.')
+            print('')
+    return username
+
+def get_password():
+    password = ''
+    while not password:
+        password = args.password if args.password else getpass()
+        if not password:
+            print('Please enter a password.')
+            print('')
+    return password
+
+def get_device_id():
+    device_id = ''
+    while not device_id:
+        device_id = args.deviceid if args.deviceid else input('Device ID: ')
+        if not device_id:
+            print('Please enter a device ID.')
+            print('')
+        try:
+            device_id = int(device_id)
+        except ValueError:
+            print('Device ID must be an integer.')
+            device_id = None
+    return device_id
+
 args = get_args()
 
 print('Welcome to the Garmin Connect "Delete Activity by Device ID" Tool!')
 print('')
 
-username = ''
-password = ''
-device_id = ''
-
-while not username:
-    username = args.username if args.username else input('Username: ')
-    if not username:
-        print('Please enter a username.')
-        print('')
-while not password:
-    password = args.password if args.password else getpass()
-    if not password:
-        print('Please enter a password.')
-        print('')
-while not device_id:
-    device_id = args.deviceid if args.deviceid else input('Device ID: ')
-    if not device_id:
-        print('Please enter a device ID.')
-        print('')
-    try:
-        device_id = int(device_id)
-    except ValueError:
-        print('Device ID must be an integer.')
-        device_id = None
+username = get_username()
+password = get_password()
+device_id = get_device_id()
 
 from_date = prompt_date('Start Date (e.g. 2018-09-30 or blank for oldest activity): ',
                        args.fromdate)
