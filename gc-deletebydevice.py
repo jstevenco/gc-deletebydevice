@@ -1,6 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
-
+#
+# Revision 2025-02-13 by jstevenco
+# - Add back in support for date range from original Pastebin script
+# - make code more Pythonic
+# - Put script into Github where revisions can be tracked
+#
 # Revision 2024-06-12 by Additional-Point-824
 # https://www.reddit.com/r/Garmin/comments/1de5mbj/deletejusttheactivitiesfromasinglegarmindevicefrom/
 
@@ -9,20 +14,12 @@
 # https://forums.garmin.com/apps-software/mobile-apps-web/f/garmin-connect-web/165851/can-i-delete-just-the-activities-from-a-single-garmin-device-from-my-garmin-connect-account
 
 """
-Original credits:
+Garmin Connect Python API:
 
-File: gcexport.py
-Original author: Kyle Krafka (https://github.com/kjkjava/)
-Date: April 28, 2015
-Fork author: Michael P (https://github.com/moderation/)
-Date: February 15, 2018
-
-Description:    Use this script to export your fitness data from Garmin Connect.
-                See README.md for more information.
-
-Activity & event types:
-    https://connect.garmin.com/modern/main/js/properties/event_types/event_types.properties
-    https://connect.garmin.com/modern/main/js/properties/activity_types/activity_types.properties
+Package: garminconnect
+Author: Ron Klinkien (https://github.com/cyberjunky/)
+Pypi: https://pypi.org/project/garminconnect/
+Requires: Python >= 3.10
 """
 
 def show_exception_and_exit(exc_type, exc_value, tb):
