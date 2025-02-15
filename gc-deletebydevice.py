@@ -171,7 +171,7 @@ activity_list = garmin.get_activities_by_date(startdate=from_date, enddate=to_da
 if len(activity_list) == 0:
     print('No activities found for the given date range.')
 else:
-    print('Found ' + str(len(activity_list)) + ' activities.')
+    print(f'Found {len(activity_list)} activities.')
 
 for activity in activity_list:
     start_time, activity_name, activity_id, activity_device_id = \
