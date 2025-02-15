@@ -31,9 +31,9 @@ def show_exception_and_exit(exc_type, exc_value, tb):
 import sys
 sys.excepthook = show_exception_and_exit
 
-
 # ##############################################
 
+from datetime import date, datetime
 from getpass import getpass
 from sys import argv
 
