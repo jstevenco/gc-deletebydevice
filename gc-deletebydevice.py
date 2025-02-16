@@ -108,6 +108,9 @@ def get_args():
                         (e.g. 2018-10-30) (otherwise, you will be prompted)',
                         metavar='DATE',
                         nargs='?')
+    parser.add_argument('--dry-run', '-n',
+                        help='show what would be deleted',
+                        action='store_true')
 
     args = parser.parse_args()
     if args.version:
@@ -196,8 +199,11 @@ for activity in activity_list:
           f", device ID = {activity_device_id}")
 
     if activity_device_id == device_id:
-        print('  Deleting activity!')
-        garmin.delete_activity(activity_id=activity_id)
+        if not args.dry_run:
+            print('  Deleting activity!')
+            garmin.delete_activity(activity_id=activity_id)
+        else:
+            print('dry run: activity not deleted.')
     else:
         print('  Device ID does not match target. Not deleting activity.')
 
