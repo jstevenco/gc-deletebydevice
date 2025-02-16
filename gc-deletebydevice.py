@@ -76,37 +76,37 @@ def get_args():
         return targetDate
 
     parser.add_argument('--version',
-                        help="print version and exit",
-                        action="store_true")
+                        help='print version and exit',
+                        action='store_true')
     parser.add_argument('--username', '-u',
                         type=str,
-                        metavar="GARMIN_USERNAME",
-                        help="your Garmin Connect username (otherwise, \
-                        you will be prompted)",
+                        metavar='GARMIN_USERNAME',
+                        help='your Garmin Connect username (otherwise, \
+                        you will be prompted)',
                         nargs='?')
     parser.add_argument('--password', '-p',
                         type=str,
-                        metavar="GARMIN_PASSWORD",
-                        help="your Garmin Connect password (otherwise, \
-                        you will be prompted)",
+                        metavar='GARMIN_PASSWORD',
+                        help='your Garmin Connect password (otherwise, \
+                        you will be prompted)',
                         nargs='?')
-    parser.add_argument('--deviceid', '-d',
+    parser.add_argument('--deviceid', '-id',
                         type=int,
-                        metavar="DEVICE_ID",
-                        help="the device ID for activities to delete (otherwise, \
-                        you will be prompted)",
+                        metavar='DEVICE_ID',
+                        help='the device ID for activities to delete (otherwise, \
+                        you will be prompted)',
                         nargs='?')
     parser.add_argument('--fromdate', '-f',
                         type=date_parser,
-                        help="the date of the first activity to delete \
-                        (e.g. 2018-09-30) (otherwise, you will be prompted)",
-                        metavar="DATE",
+                        help='the date of the first activity to delete \
+                        (e.g. 2018-09-30) (otherwise, you will be prompted)',
+                        metavar='DATE',
                         nargs='?')
     parser.add_argument('--todate', '-t',
                         type=date_parser,
-                        help="the date of the last activity to delete \
-                        (e.g. 2018-10-30) (otherwise, you will be prompted)",
-                        metavar="DATE",
+                        help='the date of the last activity to delete \
+                        (e.g. 2018-10-30) (otherwise, you will be prompted)',
+                        metavar='DATE',
                         nargs='?')
 
     args = parser.parse_args()
